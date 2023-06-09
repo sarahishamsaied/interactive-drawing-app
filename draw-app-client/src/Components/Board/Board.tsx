@@ -4,6 +4,9 @@ import { useRef } from "react";
 interface Props {
   color: string | "#000000";
   stroke: number | 1;
+  clear: boolean;
+  setClearClicked: React.Dispatch<React.SetStateAction<boolean>>;
+  activeCursor: string;
 }
 
 export default function Board(props: Props) {
@@ -11,6 +14,7 @@ export default function Board(props: Props) {
   const sketchRef = useRef<HTMLDivElement>(null);
   const [lastX, setLastX] = React.useState<number | null>(null);
   const [lastY, setLastY] = React.useState<number | null>(null);
+  const [timer, setTimer] = React.useState<NodeJS.Timeout | null>(null);
   const [isDrawing, setIsDrawing] = React.useState<boolean>(false);
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -27,15 +31,21 @@ export default function Board(props: Props) {
     console.log(canvas?.width, canvas?.height);
     const ctx = canvas?.getContext("2d");
     if (!canvas || !ctx) return;
+    if (props.clear) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      props.setClearClicked(false);
+    }
 
     const handleMouseDown = (e: MouseEvent) => {
       setIsDrawing(true);
       setLastX(e.clientX - canvas.offsetLeft);
       setLastY(e.clientY - canvas.offsetTop);
     };
-
     const handleMouseMove = (e: MouseEvent) => {
-      if (!isDrawing || !ctx) return;
+      if (!isDrawing || !ctx) {
+        return;
+      }
+      // change cursor to crosshair
       ctx.strokeStyle = props.color;
       ctx.beginPath();
       ctx.moveTo(lastX!, lastY!);
@@ -46,6 +56,11 @@ export default function Board(props: Props) {
       ctx.imageSmoothingEnabled = true;
       ctx.lineJoin = "round";
 
+      const timer = setTimeout(() => {
+        let data = canvas.toDataURL("image/png");
+        console.log(data);
+      }, 1000);
+      setTimer(timer);
       setLastX(e.clientX - canvas.offsetLeft);
       setLastY(e.clientY - canvas.offsetTop);
     };
@@ -57,17 +72,32 @@ export default function Board(props: Props) {
     canvas.addEventListener("mousedown", handleMouseDown);
     canvas.addEventListener("mousemove", handleMouseMove);
     canvas.addEventListener("mouseup", handleMouseUp);
-
     return () => {
       canvas.removeEventListener("mousedown", handleMouseDown);
       canvas.removeEventListener("mousemove", handleMouseMove);
       canvas.removeEventListener("mouseup", handleMouseUp);
+      clearTimeout(timer!);
     };
-  }, [isDrawing, lastX, lastY, props.color]);
-
+  }, [
+    isDrawing,
+    lastX,
+    lastY,
+    props.color,
+    props.clear,
+    props,
+    timer,
+    props.activeCursor,
+  ]);
+  console.log(props.activeCursor);
   return (
     <div id="sketch" ref={sketchRef}>
-      <canvas id="board" width="500" height="1000" ref={canvasRef}></canvas>
+      <canvas
+        id="board"
+        width="500"
+        height="1000"
+        ref={canvasRef}
+        className={`${props.activeCursor}`}
+      ></canvas>
     </div>
   );
 }
