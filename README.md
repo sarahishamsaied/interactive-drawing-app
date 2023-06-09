@@ -3,4 +3,4 @@ An upcoming interactive whiteboard application using Reactjs, TypeScript, Canvas
 
 Current Demo:
 
-![drw-app](https://github.com/sarahishamsaied/interactive-whiteboard/assets/71923204/117855b9-3a13-4f85-9c91-ada21e56d5de)
+![image](https://github.com/sarahishamsaied/interactive-whiteboard/assets/71923204/fd9b7d5d-4fa1-4d53-afad-c8ae5bdc7f03)
