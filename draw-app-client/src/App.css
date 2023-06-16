@@ -1,8 +1,11 @@
 .eraser-cursor {
-  cursor: url("../../draw-app-client/public/stroke.png"), auto;
+  cursor: url("../../draw-app-client/public/eraser (3).png"), auto;
 }
 .pencil-cursor {
   cursor: url("../../draw-app-client/public/pencil.png"), auto;
+}
+.text-cursor {
+  cursor: url("../../draw-app-client/public/text3.png"), auto;
 }
 
 .container {
@@ -33,7 +36,7 @@
   left: 0;
   width: 100%;
   background-color: #ffffff;
-  box-shadow: 0px 0px 36px #000000ab;
+  box-shadow: 0px 0px 36px #00000053;
   display: flex;
   justify-content: start;
   align-items: center;

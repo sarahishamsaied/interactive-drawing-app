@@ -7,7 +7,7 @@ const Container = (props: Props) => {
   const [color, setColor] = React.useState<string>("#000000");
   const [stroke, setStroke] = React.useState<number>(1);
   const [activeCursor, setActiveCursor] =
-    React.useState<string>("erasor-cursor");
+    React.useState<string>("pencil-cursor");
   const [strokeMenuClicked, setStrokeMenuClicked] =
     React.useState<boolean>(false);
   const [clearClicked, setClearClicked] = React.useState<boolean>(false);
@@ -19,6 +19,9 @@ const Container = (props: Props) => {
   };
   const handleStrokeMenuClick = () => {
     setStrokeMenuClicked(!strokeMenuClicked);
+  };
+  const handleAddText = () => {
+    setActiveCursor("text-cursor");
   };
 
   return (
@@ -53,12 +56,20 @@ const Container = (props: Props) => {
             onClick={() => setActiveCursor("eraser-cursor")}
           />
         </div>
+        <div className="eraser-container icon">
+          <img
+            src="font.png"
+            alt=""
+            className="eraserIcon"
+            onClick={() => setActiveCursor("text-cursor")}
+          />
+        </div>
         {strokeMenuClicked && (
           <div className="stroke-menu">
             <input
               type="range"
               min="1"
-              max="50"
+              max="70"
               value={stroke}
               onChange={handleChangeStroke}
             />
